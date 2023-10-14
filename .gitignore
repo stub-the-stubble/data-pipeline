@@ -1,0 +1,13 @@
+# Package Managers
+node_modules
+
+# Environment Files
+.env
+
+# Data Files
+*.kml
+*.kmz
+
+# OS Cruft
+.DS_Store
+Thumbs.db
