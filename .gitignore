@@ -3,10 +3,12 @@ node_modules
 
 # Environment Files
 .env
+/env
 
 # Data Files
 *.kml
 *.kmz
+*.csv
 
 # OS Cruft
 .DS_Store

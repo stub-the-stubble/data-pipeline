@@ -37,6 +37,14 @@ for layer in fiona.listlayers(fires_kmz):
             fires_gdf = fires_gdf._append(fgdf)
             break
 
+fires_gdf.drop(inplace = True, columns=['Name','timestamp','begin','end','altitudeMode','tessellate','extrude','visibility','drawOrder','icon'])
+
+desc_vector = fires_gdf["description"].str.replace('\s+'," ",regex=True)
+desc_vector = desc_vector.str.replace('<br/>',",", regex=True)
+desc_vector = desc_vector.str.replace('<.*?>',"", regex=True)
+desc_vector = desc_vector.str.strip()
+fires_gdf["description"] = desc_vector
+
 print(fires_gdf)
 
 fires_gdf['district'] = None
@@ -49,4 +57,5 @@ for i, fire in fires_gdf.iterrows():
             fires_gdf.at[i, 'state'] = district['st_nm']
 
 fires_per_state = fires_gdf.groupby('state').size().reset_index(name='fires_count')
+fires_gdf.to_csv('fires_gdf.csv', index=False)
 print(fires_per_state)
