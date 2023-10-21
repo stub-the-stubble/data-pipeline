@@ -37,13 +37,13 @@ for layer in fiona.listlayers(fires_kmz):
             fires_gdf = fires_gdf._append(fgdf)
             break
 
-fires_gdf.drop(inplace = True, columns=['Name','timestamp','begin','end','altitudeMode','tessellate','extrude','visibility','drawOrder','icon'])
-
-desc_vector = fires_gdf["description"].str.replace('\s+'," ",regex=True)
-desc_vector = desc_vector.str.replace('<br/>',",", regex=True)
-desc_vector = desc_vector.str.replace('<.*?>',"", regex=True)
-desc_vector = desc_vector.str.strip()
-fires_gdf["description"] = desc_vector
+#fires_gdf.drop(inplace = True, columns=['Name','timestamp','begin','end','altitudeMode','tessellate','extrude','visibility','drawOrder','icon'])
+#
+#desc_vector = fires_gdf["description"].str.replace('\s+'," ",regex=True)
+#desc_vector = desc_vector.str.replace('<br/>',",", regex=True)
+#desc_vector = desc_vector.str.replace('<.*?>',"", regex=True)
+#desc_vector = desc_vector.str.strip()
+#fires_gdf["description"] = desc_vector
 
 print(fires_gdf)
 

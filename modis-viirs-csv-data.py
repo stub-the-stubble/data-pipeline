@@ -20,8 +20,9 @@ districts_file_name = 'india-districts-2019-734'
 #url = f"https://firms.modaps.eosdis.nasa.gov/api/kml_fire_footprints/south_asia/{TIME_PERIOD}/suomi-npp-viirs-c2"
 
 #See doc here: https://firms.modaps.eosdis.nasa.gov/api/country/
-#url = f"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{MAP_KEY}/MODIS_NRT/IND/1"
-url = f"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{MAP_KEY}/VIIRS_SNPP_NRT/IND/1"
+
+url = f"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{MAP_KEY}/MODIS_NRT/IND/1"
+#url = f"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{MAP_KEY}/VIIRS_SNPP_NRT/IND/1"
 #url = f"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{MAP_KEY}/VIIRS_NOAA20_NRT/IND/1"
 
 
@@ -48,6 +49,8 @@ for i, fire in fires_gdf.iterrows():
 fires_per_state = fires_gdf.groupby('state').size().reset_index(name='fires_count')
 
 fires_gdf.drop(inplace=True,columns=['geometry','country_id'])
+fires_gdf = fires_gdf[fires_gdf.state.str.contains("Punjab")]
+print(fires_gdf)
 fires_gdf.to_csv('fires_gdf.csv', index=False)
 
 print(fires_per_state)
