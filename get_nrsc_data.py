@@ -91,7 +91,7 @@ if (not updated):
     d["counts"].append({"date": DATE, "count":total})
 
 
-d["last_update"] = datetime.now().strftime('%-I:%M %p, %d %b %Y')
+d["last_update"] = datetime.now(tz=ZoneInfo("Asia/Kolkata")).strftime('%-I:%M %p, %d %b %Y')
 json_object = json.dumps(d, indent=4)
 
 with open("docs/total_numbers.json", "w") as outfile:
