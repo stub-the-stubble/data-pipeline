@@ -2,8 +2,11 @@ name: Get Data from NRSC
 
 on:
   schedule:
-    - cron: '30 0,10-13,18 * * *' #Runs at 30 minutes past the hour, at 00:00, 10:00 through 13:00, and 18:59 UTC
+    - cron: '35 */1 * * *' #Runs at 35 minutes past the hour.
   workflow_dispatch:
+  
+permissions:
+  contents: write
 
 jobs:
   get-nrsc-data:
