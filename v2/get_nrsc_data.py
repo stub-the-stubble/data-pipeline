@@ -9,26 +9,28 @@ from shapely.geometry import Point
 
 SENSORS = ["modis","vf375"]
 API_VERSION = "v2"
-STATE = "PB"
 
 def main():
 
     args = parse_arguments()
     DATE = get_date(args)
+    STATE = "PB"
 
-    print(f"Getting data for {DATE}")
-    if (not read_csv(args)):
+    if (not args.csv):
+        print(f"Getting data for {DATE} from nrsc")
         fires_gdf = get_data_from_nrsc(DATE)
     else:
-        fires_gdf = pd.read_csv('fires_gdf.csv')
-    filter_nrsc_data_state(fires_gdf,STATE)
-    districts_gdf = get_districts_geometry(STATE)
+        print(f"Getting data for {DATE} from csv")
+        fires_gdf = pd.read_csv(f'docs/v2/csv/{DATE}.csv')
 
+    districts_gdf = get_districts_geometry(STATE)
     print("Identifying districts")
-    add_district_data(fires_gdf, districts_gdf)
-    filter_nrsc_data_columns(fires_gdf)
+    fires_gdf = fires_gdf.pipe(filter_nrsc_data_state, STATE)\
+                         .pipe(filter_nrsc_data_cropmask)\
+                         .pipe(add_district_data, districts_gdf)\
+                         .pipe(filter_nrsc_data_columns)
+    print(fires_gdf)
     fires_df = pd.DataFrame(fires_gdf)
-    print(fires_df)
     write_todays_date_data(fires_df, districts_gdf, STATE, DATE)
 
 def get_date(args):
@@ -37,31 +39,28 @@ def get_date(args):
     else:
         return datetime.now(tz=ZoneInfo("Asia/Kolkata")).strftime('%Y-%m-%d')
 
-def read_csv(args):
-    return args.csv
-
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d","--date")
-    parser.add_argument('-c', '--csv', action='store_true') 
+    parser.add_argument('-c', '--csv', action='store_true')
     args = parser.parse_args()
 
     return args
 
 def filter_nrsc_data_state(_gdf, _state):
-    _gdf[_gdf.state.str.contains(_state)]
+    return _gdf[_gdf.state.str.contains(_state)]
 
 def filter_nrsc_data_cropmask(_gdf):
-     _gdf[_gdf.cropmask.notna()]
+    return _gdf[_gdf.cropmask.notna()]
 
 def filter_nrsc_data_detection(_gdf, _sensor):
     if (_sensor == "modis"):
-         _gdf[_gdf.detection_ > 30]
+         return _gdf[_gdf.detection_ > 30]
     else:
-         _gdf[_gdf.detection_ > 7]
+         return _gdf[_gdf.detection_ > 7]
 
 def filter_nrsc_data_columns(_gdf):
-    _gdf.drop(inplace = True, columns=['brightness','acqdate','acqtime','sensor','cropmask','geometry','scanpixel_','trackpixel','mailsent','mailsent_t','village_na','id','orbitno','coverage_f'])
+   return _gdf.drop(columns=['brightness','acqdate','acqtime','sensor','cropmask','geometry','scanpixel_','trackpixel','mailsent','mailsent_t','village_na','id','orbitno','coverage_f'])
 
 def get_data_from_nrsc(date):
     s = requests.Session()
@@ -85,15 +84,14 @@ def get_data_from_nrsc(date):
         print("Done")
 
         _gdf = gpd.read_file(f"zip:///{os.path.realpath(zipfile_name)}!shape/{filename[0]}.shp")
-
-        filter_nrsc_data_cropmask(_gdf)
         filter_nrsc_data_detection(_gdf, SENSOR)
+
         #_gdf.to_csv(f'fires_temp_{SENSOR}.csv', index=False)
 
         fires_gdf_array.append(_gdf)
 
     combined_sensors_df = pd.concat([fires_gdf_array[0],fires_gdf_array[1]])
-    combined_sensors_df.to_csv('fires_gdf.csv', index=False)
+    combined_sensors_df.to_csv(f'docs/v2/csv/{date}.csv', index=False)
     return combined_sensors_df
 
 
@@ -136,6 +134,7 @@ def write_todays_date_data(fires_df, districts_gdf, _state, _date):
         result_json[str(value)] = district_count
         d[_state]["districts"][value]["dates"][_date] = district_count
 
+    print("District wise data")
     pprint(result_json)
     todays_data[_state]["locations"] = json.loads(fires_df.to_json(orient="records"))
     todays_data[_state]["districts"] = result_json

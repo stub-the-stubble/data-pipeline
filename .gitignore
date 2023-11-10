@@ -9,7 +9,6 @@ node_modules
 /data
 *.kml
 *.kmz
-*.csv
 *.zip
 
 #Test scripts
