@@ -13,7 +13,7 @@ from shapely.geometry import Point
 # Shape files from  https://onlinemaps.surveyofindia.gov.in/Digital_Product_Show.aspx
 # Restrict to punjab only for optimization
 
-districts_file_name = "PUNJAB_DISTRICT_BDY.json"
+districts_file_name = "geojson/PUNJAB_DISTRICT_BDY.json"
 districts_gdf = gpd.read_file(districts_file_name)
 
 DATE = datetime.now(tz=ZoneInfo("Asia/Kolkata")).strftime('%Y-%m-%d')

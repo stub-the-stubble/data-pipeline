@@ -17,3 +17,6 @@ node_modules
 # OS Cruft
 .DS_Store
 Thumbs.db
+
+# Python cache
+__pycache__
