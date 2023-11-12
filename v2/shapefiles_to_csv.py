@@ -11,12 +11,15 @@ def main():
     print(gdf.dtypes)
     dataframes = split_into_dates(gdf, "acqdate")
 
-    write_to_dates_csv(dataframes)
+    path = utils.get_save_path(args.temp)
+    write_to_dates_csv(dataframes, path)
 
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("files", nargs="+", help="List of file paths")
+    parser.add_argument("-t", "--temp", action="store_true", default=False)
+
     args = parser.parse_args()
     return args
 
@@ -39,9 +42,9 @@ def split_into_dates(combined_gdf, date_col):
     return date_dataframes
 
 
-def write_to_dates_csv(dataframes):
+def write_to_dates_csv(dataframes, path):
     for date, date_gdf in dataframes.items():
-        date_gdf.to_csv(f"{CSV_PATH}/{date}.csv", index=False)
+        date_gdf.to_csv(f"{path}/csv/{date}.csv", index=False)
     print(dataframes)
 
 

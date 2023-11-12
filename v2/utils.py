@@ -1,4 +1,5 @@
 import zipfile as z
+from constants import *
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -16,3 +17,10 @@ def get_todays_date():
 
 def get_time_string():
     return datetime.now(tz=ZoneInfo("Asia/Kolkata")).strftime("%-I:%M %p, %d %b %Y")
+
+
+def get_save_path(temp):
+    if temp:
+        return TMP_PATH
+    else:
+        return FILES_PATH
