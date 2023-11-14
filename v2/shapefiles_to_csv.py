@@ -8,7 +8,6 @@ from constants import *
 def main():
     args = parse_arguments()
     gdf = read_shapefiles(args.files)
-    print(gdf.dtypes)
     dataframes = split_into_dates(gdf, "acqdate")
 
     path = utils.get_save_path(args.temp)
@@ -44,8 +43,9 @@ def split_into_dates(combined_gdf, date_col):
 
 def write_to_dates_csv(dataframes, path):
     for date, date_gdf in dataframes.items():
-        date_gdf.to_csv(f"{path}/csv/{date}.csv", index=False)
-    print(dataframes)
+        filename = f"{path}/csv/{date}.csv"
+        print(f"Writing to {filename}")
+        date_gdf.to_csv(filename, index=False)
 
 
 if __name__ == "__main__":

@@ -150,7 +150,7 @@ def create_historical_data_obj(districts_gdf):
     obj = {"total": {"dates": {}}, "districts": {}}
     districts = districts_gdf.District.tolist()
     for dist in districts:
-        obj.districts[dist] = {"dates": {}}
+        obj["districts"][dist] = {"dates": {}}
 
     return obj
 
@@ -182,6 +182,10 @@ def write_todays_date_data(fires_df, districts_gdf, _state, _date, path):
         # Set historical data for this district
         h_d["districts"][district]["dates"][_date] = district_count
 
+        # Sort the dates just in case
+        dates_sorted = dict(sorted(h_d["districts"][district]["dates"].items()))
+        h_d["districts"][district]["dates"] = dates_sorted
+
     print("Total: ", todays_data["total"])
     print("District wise data:")
     pprint(result_json)
@@ -193,6 +197,11 @@ def write_todays_date_data(fires_df, districts_gdf, _state, _date, path):
         json.dump(todays_data, outfile, separators=(",", ":"))
 
     h_d["total"]["dates"][_date] = len(fires_df)
+
+    # Sort the dates just in case
+    dates_sorted = dict(sorted(h_d["total"]["dates"].items()))
+    h_d["total"]["dates"] = dates_sorted
+
     h_d["last_update"] = update_time_ist
 
     print(f"Writing to {path}/{_state}/historical_data.json")
