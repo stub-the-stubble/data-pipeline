@@ -1,3 +1,1 @@
 lat,lon,brightness,scanpixel_,trackpixel,detection_,radiative_,sat,acqdate,acqtime,orbitno,sensor,state,district,village_na,coverage_f,id,cropmask,mailsent,mailsent_t,geometry
-30.299,76.26,315.3,1.9,1.3,61.0,14.4,mod,2024-07-25,13:50:14,018228,A,PB,,,,3573058,,1,2024-07-25,POINT (76.26000213623047 30.29899978637695)
-29.305,77.154,317.5,1.7,1.3,42.0,14.7,mod,2024-07-25,13:50:14,018228,A,HR,,,,3573057,,1,2024-07-25,POINT (77.15399932861328 29.30500030517578)
