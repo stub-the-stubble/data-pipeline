@@ -1,1 +1,4 @@
 lat,lon,brightness,scanpixel_,trackpixel,detection_,radiative_,sat,acqdate,acqtime,orbitno,sensor,state,district,village_na,coverage_f,id,cropmask,mailsent,mailsent_t,geometry
+26.76044,83.20081,297.5,0.6,0.7,8.0,1.4,npp,2024-12-09,00:50:46,067963,VF375,UP,,,,3658259,,,,POINT (83.20081329345703 26.76044082641602)
+24.44911,83.04008,299.3,0.5,0.7,8.0,0.9,npp,2024-12-09,00:50:46,067963,VF375,UP,,,,3658260,,,,POINT (83.04007720947266 24.44911003112793)
+24.44695,83.04025,297.9,0.5,0.7,8.0,0.6,npp,2024-12-09,00:50:46,067963,VF375,UP,,,,3658263,,,,POINT (83.04025268554688 24.44695091247559)
