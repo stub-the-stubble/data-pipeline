@@ -25,3 +25,5 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - name: Validate published baseline
         run: python -c "import sys; sys.path.insert(0, 'v2'); from backfill import validate_published_data; print('Validated daily files:', validate_published_data('docs/v2'))"
+      - name: Replay frozen recovery batch without publishing
+        run: python tests/replay_recovery.py

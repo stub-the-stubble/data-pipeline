@@ -22,7 +22,8 @@ concurrency:
 
 jobs:
   prepare:
-    if: github.event_name == 'workflow_dispatch' || vars.STUB_PUBLISH_ENABLED == 'true'
+    # Manual publication can run while the hourly writer remains held off.
+    if: github.event_name == 'workflow_dispatch' || (vars.STUB_SCHEDULE_ENABLED == 'true' && vars.STUB_PUBLISH_ENABLED == 'true')
     runs-on: ubuntu-24.04
     timeout-minutes: 19
     permissions:
@@ -44,9 +45,16 @@ jobs:
           MODE: ${{ inputs.mode }}
           REF: ${{ github.ref }}
           ENABLED: ${{ vars.STUB_PUBLISH_ENABLED }}
+          SCHEDULE_ENABLED: ${{ vars.STUB_SCHEDULE_ENABLED }}
         run: |
           mode="${MODE:-validate}"
-          if [ "$EVENT" = schedule ]; then mode=ingest-and-deploy; fi
+          if [ "$EVENT" = schedule ]; then
+            if [ "$SCHEDULE_ENABLED" != true ]; then
+              echo 'Scheduled ingestion is held: STUB_SCHEDULE_ENABLED is not true'
+              exit 1
+            fi
+            mode=ingest-and-deploy
+          fi
           case "$mode" in validate|ingest-and-deploy|deploy-existing) ;; *) exit 1 ;; esac
           publish=false
           if [ "$mode" != validate ]; then

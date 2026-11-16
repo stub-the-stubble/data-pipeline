@@ -93,8 +93,11 @@ The workflow has three manual modes:
   source downloads or data commit. Use after an approved backfill commit.
 
 Every publishing path requires `main` and repository variable
-`STUB_PUBLISH_ENABLED=true`. With the variable absent/false, scheduled writes
-are skipped and manual publishing modes fail. Set the Pages source to GitHub
+`STUB_PUBLISH_ENABLED=true`. Hourly ingestion additionally requires
+`STUB_SCHEDULE_ENABLED=true`. Leave the scheduling flag absent/false throughout
+manual backfill publication; concurrency alone does not pause the hourly writer.
+With the publication flag absent/false, scheduled writes are skipped and manual
+publishing modes fail. Set the Pages source to GitHub
 Actions and configure the `github-pages` environment for main (and any required
 reviewer) during the approved release. These settings are not changed by the
 local code preparation. Keep the variable disabled until the frontend, runtime,
@@ -110,5 +113,15 @@ cannot lock a maintainer's separate git push. The deploy job uses scoped
 A commit succeeding does not prove deployment succeeded. If deployment fails,
 keep writes held, diagnose the failure, and use an approved `deploy-existing`
 run for the reviewed commit. Verify the public JSON after deployment. Hosted
-Conda execution, environment approval rules and actual Pages delivery remain
-unverified until an approved remote validation/release.
+Conda execution and offline tests have passed hosted validation. Environment
+approval rules and actual Pages delivery still require an approved release.
+
+### Frozen recovery regression
+
+`python tests/replay_recovery.py` replays 23 October–15 November 2026 from
+`tests/fixtures/recovery/inputs.zip` into temporary storage. These are public
+NRSC observations and the preserved published baseline, not credentials.
+`expected.json` records input and semantic output hashes. Every output field
+except generated `last_update` timestamps must match the reviewed local build.
+The test reconciles all 48 daily files and both histories and checks resumability.
+It performs no network downloads, repository writes, commits or deployments.
