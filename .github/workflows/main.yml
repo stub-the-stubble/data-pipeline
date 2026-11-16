@@ -1,37 +1,128 @@
-name: Get Data from NRSC
+name: Validate, ingest and publish NRSC data
 
 on:
   schedule:
-    - cron: '35 0-23 * * *' #Runs at 35 minutes past the hour.
+    - cron: '35 0-23 * * *'
   workflow_dispatch:
-  
+    inputs:
+      mode:
+        description: 'Validate only, ingest today and deploy, or deploy already committed data'
+        type: choice
+        options: [validate, ingest-and-deploy, deploy-existing]
+        default: validate
+        required: true
+
 permissions:
-  contents: write
+  contents: read
+
+# Shared by every supported writer/publisher. Hold the whole run, including deployment.
+concurrency:
+  group: nrsc-data-release
+  cancel-in-progress: false
 
 jobs:
-  get-nrsc-data:
-    runs-on: ubuntu-latest
+  prepare:
+    if: github.event_name == 'workflow_dispatch' || vars.STUB_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-24.04
     timeout-minutes: 19
+    permissions:
+      contents: write
+    outputs:
+      publish: ${{ steps.mode.outputs.publish }}
+      data_sha: ${{ steps.snapshot.outputs.data_sha }}
     defaults:
       run:
         shell: bash -el {0}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.1
-      - name: Setup conda
-        uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/checkout@v4
         with:
+          fetch-depth: 1
+      - name: Resolve mode and enforce release gate
+        id: mode
+        env:
+          EVENT: ${{ github.event_name }}
+          MODE: ${{ inputs.mode }}
+          REF: ${{ github.ref }}
+          ENABLED: ${{ vars.STUB_PUBLISH_ENABLED }}
+        run: |
+          mode="${MODE:-validate}"
+          if [ "$EVENT" = schedule ]; then mode=ingest-and-deploy; fi
+          case "$mode" in validate|ingest-and-deploy|deploy-existing) ;; *) exit 1 ;; esac
+          publish=false
+          if [ "$mode" != validate ]; then
+            if [ "$REF" != refs/heads/main ] || [ "$ENABLED" != true ]; then
+              echo 'Publishing requires main and STUB_PUBLISH_ENABLED=true'
+              exit 1
+            fi
+            publish=true
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "publish=$publish" >> "$GITHUB_OUTPUT"
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v4
+        with:
+          miniconda-version: latest
           environment-file: spec-file.txt
           activate-environment: env
-          auto-activate-base: false
-      - name: Run script
-        run: |
-          python v2/get_nrsc_data.py
-      - name: Push new data
+          auto-activate: false
+      - name: Run offline tests
+        run: python -m unittest discover -s tests -v
+      - name: Require both published histories
+        run: python -c "import sys; sys.path.insert(0, 'v2'); from backfill import require_histories; require_histories('docs/v2')"
+      - name: Ingest current IST day
+        if: steps.mode.outputs.mode == 'ingest-and-deploy'
+        run: python v2/get_nrsc_data.py
+      - name: Reconcile all recovered daily files with history
+        run: python -c "import sys; sys.path.insert(0, 'v2'); from backfill import validate_published_data; print('Validated daily files:', validate_published_data('docs/v2'))"
+      - name: Commit validated JSON only
+        if: steps.mode.outputs.mode == 'ingest-and-deploy'
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add docs/v2/*
-          git commit -m "Data update : $(date)"
-          git status
-          git push
+          git add -- docs/v2/PB/*.json docs/v2/HR/*.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Data update : $(date -u)"
+            git push origin HEAD:main
+          fi
+      - name: Package the committed snapshot
+        if: steps.mode.outputs.publish == 'true'
+        id: snapshot
+        run: |
+          git fetch origin main
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+            echo 'Main moved; refusing to deploy a stale snapshot'
+            exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/pages-site"
+          git archive HEAD docs | tar -x -C "$RUNNER_TEMP/pages-site"
+          echo "data_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Upload committed Pages artifact
+        if: steps.mode.outputs.publish == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/pages-site/docs
+
+  deploy:
+    needs: prepare
+    if: needs.prepare.outputs.publish == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Check the deployment snapshot is still current
+        env:
+          DATA_SHA: ${{ needs.prepare.outputs.data_sha }}
+        run: test "$(git rev-parse HEAD)" = "$DATA_SHA"
+      - uses: actions/configure-pages@v5
+      - name: Deploy the validated artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
