@@ -2,6 +2,7 @@ import copy
 from datetime import date
 import hashlib
 import json
+import re
 from pathlib import Path
 import sys
 import tempfile
@@ -36,8 +37,11 @@ class IariTests(unittest.TestCase):
             with self.assertRaises(ValueError): source.parse_bulletin(text, '2026-11-15')
 
     def test_summary_must_match_district_totals(self):
+        # Change the Amritsar total regardless of whitespace or platform newlines.
+        altered, count = re.subn(r'^(AMRITSAR[^\n]*\s)265\s*$', r'\g<1>266', self.summary, count=1, flags=re.M)
+        self.assertEqual(count, 1, 'The test must actually alter the district total')
         with self.assertRaises(ValueError):
-            source.parse_bulletin(self.summary.replace('265 ', '266 ', 1), '2026-11-15')
+            source.parse_bulletin(altered, '2026-11-15')
 
     def test_future_layout_is_not_guessed(self):
         with self.assertRaises(ValueError): source.days_through('2027-11-15')

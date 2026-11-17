@@ -10,8 +10,8 @@
   "display_simplification_metres": 40,
   "count_assignment": "Publisher classification; polygons do not determine counts",
   "outputs": {
-    "PB": "62316e69951e663b479f5b3cc6e0d583dfa24fc26d8f985ed5111137494abe4a",
-    "HR": "79e92993c8e6cd064b259c97d3173021ddb0dd7165cdfc7be702c5adf5fe882a"
+    "PB": "d6a1376f7be80aee45e1add8dc97508abd3833aa3479cd863a060ce5f9b699b9",
+    "HR": "38c79ad0a33899d47087f6943ac03e8df59d40f8195481bc580eb8e3f61cc947"
   },
-  "svg_sha256": "24b5854d1e10112a887c47c4724c715ecc1e158cc5fe844e103f22b5aa2a2b4a"
+  "svg_sha256": "f0ebd804e5f0b5c275894c19fd60ef08116604067161987e40442438fb429a2f"
 }
