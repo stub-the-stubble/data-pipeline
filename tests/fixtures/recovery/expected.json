@@ -1,0 +1,300 @@
+{
+  "baseline_commit": "15cd1d3dbfa8dbc0771f35a5fa57bd2b90cbb136",
+  "start": "2026-10-23",
+  "end": "2026-11-15",
+  "input_archive_sha256": "31fae780d8549444dcbb03c46cced25d121d5c39ef4228072a79683f67f80fa6",
+  "completed": {
+    "2026-10-23": {
+      "HR": {
+        "total": 3,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 39,
+        "unassigned": 0
+      }
+    },
+    "2026-10-24": {
+      "HR": {
+        "total": 5,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 37,
+        "unassigned": 0
+      }
+    },
+    "2026-10-25": {
+      "HR": {
+        "total": 2,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 7,
+        "unassigned": 0
+      }
+    },
+    "2026-10-26": {
+      "HR": {
+        "total": 3,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 110,
+        "unassigned": 0
+      }
+    },
+    "2026-10-27": {
+      "HR": {
+        "total": 2,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 36,
+        "unassigned": 0
+      }
+    },
+    "2026-10-28": {
+      "HR": {
+        "total": 7,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 110,
+        "unassigned": 0
+      }
+    },
+    "2026-10-29": {
+      "HR": {
+        "total": 1,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 214,
+        "unassigned": 0
+      }
+    },
+    "2026-10-30": {
+      "HR": {
+        "total": 0,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 42,
+        "unassigned": 0
+      }
+    },
+    "2026-10-31": {
+      "HR": {
+        "total": 6,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 327,
+        "unassigned": 1
+      }
+    },
+    "2026-11-01": {
+      "HR": {
+        "total": 9,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 200,
+        "unassigned": 0
+      }
+    },
+    "2026-11-02": {
+      "HR": {
+        "total": 5,
+        "unassigned": 1
+      },
+      "PB": {
+        "total": 116,
+        "unassigned": 0
+      }
+    },
+    "2026-11-03": {
+      "HR": {
+        "total": 4,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 514,
+        "unassigned": 0
+      }
+    },
+    "2026-11-04": {
+      "HR": {
+        "total": 0,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 0,
+        "unassigned": 0
+      }
+    },
+    "2026-11-05": {
+      "HR": {
+        "total": 11,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 344,
+        "unassigned": 0
+      }
+    },
+    "2026-11-06": {
+      "HR": {
+        "total": 3,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 305,
+        "unassigned": 0
+      }
+    },
+    "2026-11-07": {
+      "HR": {
+        "total": 1,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 10,
+        "unassigned": 0
+      }
+    },
+    "2026-11-08": {
+      "HR": {
+        "total": 71,
+        "unassigned": 2
+      },
+      "PB": {
+        "total": 1073,
+        "unassigned": 0
+      }
+    },
+    "2026-11-09": {
+      "HR": {
+        "total": 0,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 19,
+        "unassigned": 0
+      }
+    },
+    "2026-11-10": {
+      "HR": {
+        "total": 4,
+        "unassigned": 1
+      },
+      "PB": {
+        "total": 181,
+        "unassigned": 0
+      }
+    },
+    "2026-11-11": {
+      "HR": {
+        "total": 4,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 507,
+        "unassigned": 1
+      }
+    },
+    "2026-11-12": {
+      "HR": {
+        "total": 0,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 0,
+        "unassigned": 0
+      }
+    },
+    "2026-11-13": {
+      "HR": {
+        "total": 7,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 193,
+        "unassigned": 0
+      }
+    },
+    "2026-11-14": {
+      "HR": {
+        "total": 0,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 21,
+        "unassigned": 0
+      }
+    },
+    "2026-11-15": {
+      "HR": {
+        "total": 0,
+        "unassigned": 0
+      },
+      "PB": {
+        "total": 10,
+        "unassigned": 0
+      }
+    }
+  },
+  "semantic_sha256": {
+    "HR/2026-10-23.json": "709a22c62e843cf8abec245277d2841c0997cb38274155ead4a2c2bf4e1a1eaa",
+    "HR/2026-10-24.json": "5c6c8459df61821668d3a94176ddce039859d6200c6c38f2a8db45cdb2c8ca60",
+    "HR/2026-10-25.json": "f18694e1cbda05c8ee42625da88280fee4a2302e61a42030ed7c870212837c06",
+    "HR/2026-10-26.json": "1b034ebd82bf1f3f461f359d2f00e28c41e88e8f5b78b4f9062dd2c6aaa54f9e",
+    "HR/2026-10-27.json": "e3761a0775ccd3bae2a85de7399c5758125f69a1900516e4117a9e7c076f3086",
+    "HR/2026-10-28.json": "0608a28a4a867959f526311a030426a2b8ecdd84fd719bf5091bce7df10ed674",
+    "HR/2026-10-29.json": "a39b2946ea9bc2f0ee30a6dddb21ad3d3a2f31265366a3d75581a8a5b4a985c0",
+    "HR/2026-10-30.json": "120dba305bd95aed8f9e25a12fc468fe8afd51bc0c48a80485840b2eebd783c2",
+    "HR/2026-10-31.json": "9fca67af8275680e2dc30a745bf17d88e44f9ea8798aa3ee5e02b6121556b97a",
+    "HR/2026-11-01.json": "3468fc9ffaed31ad3a952ede15e81bc0987758d10c6ba3610f949ff3545901cd",
+    "HR/2026-11-02.json": "d96663089c20176f72e7f94e0d2de3fdc84014601d2348d252d593403317677e",
+    "HR/2026-11-03.json": "df2708ee1f6efa15e70e4f27306d4de8f87c84e84eed4fe655267e85a0ef11db",
+    "HR/2026-11-04.json": "120dba305bd95aed8f9e25a12fc468fe8afd51bc0c48a80485840b2eebd783c2",
+    "HR/2026-11-05.json": "d0fb1538fb36ec063ebb232f7829f687f2ee64b6349191570641ec12bc9b6876",
+    "HR/2026-11-06.json": "941a5966e5993941cd32a7252673e04b516ac1e8e65f39f67b577696ef1f39ba",
+    "HR/2026-11-07.json": "67528957107ee64be2245fe59e821a30d597a223188624879956d1cff8ef7468",
+    "HR/2026-11-08.json": "338c3be7a7f8231cf504528633e18f5012dc4d7f598f1bf9273e89640c89c80c",
+    "HR/2026-11-09.json": "120dba305bd95aed8f9e25a12fc468fe8afd51bc0c48a80485840b2eebd783c2",
+    "HR/2026-11-10.json": "4f1c1c5972f4244a87dd13a8026d56e92696d54092a35af6468f993e566fc0af",
+    "HR/2026-11-11.json": "8bd7febaa9509b4d9e01e760d8957a56bc24b9822684551ba3c6fb8c1d729df9",
+    "HR/2026-11-12.json": "120dba305bd95aed8f9e25a12fc468fe8afd51bc0c48a80485840b2eebd783c2",
+    "HR/2026-11-13.json": "3aa0ce30e3b1b32acfdf1ac2f0759bd9220cfaa051dd4e0d6705e505db8e4b96",
+    "HR/2026-11-14.json": "120dba305bd95aed8f9e25a12fc468fe8afd51bc0c48a80485840b2eebd783c2",
+    "HR/2026-11-15.json": "120dba305bd95aed8f9e25a12fc468fe8afd51bc0c48a80485840b2eebd783c2",
+    "HR/historical_data.json": "34a0cc64b5d1173cdc4a3cf12747b019fc587c0ab55743e5f942b07f5bcb3c84",
+    "PB/2026-10-23.json": "1b45b001567c03779b52dfe64d0fd53368b46bd002fc0fa0aecbe460a65009a5",
+    "PB/2026-10-24.json": "ea8df920877843bc5cf379f5cd7c9421fa4395faf29bed1c0e532ae75dca5863",
+    "PB/2026-10-25.json": "843ee0cc06d83f0f6020b18287972fad65a2f8677164ea27dc82762806846e41",
+    "PB/2026-10-26.json": "e9fa43d0ba951252eca61e114133a47b2ff2358adeb447abea12dd652d70586e",
+    "PB/2026-10-27.json": "4549196c31fb185cf18647868ec6c1827205e3bf2cb3f408c1c3d5cd102bf992",
+    "PB/2026-10-28.json": "8f9d90bd632dc346f8a174d7784b1466d1ec2348d04ed30b056397a820d4aaa5",
+    "PB/2026-10-29.json": "3bbe0f5c1e0eacbaa8bcf403ea3c7deec4fcb954f77db1c65c43e76519029d08",
+    "PB/2026-10-30.json": "7c4db9b56ec1b19ca3ed5b55e9714f67da4a77b046bf2e42a1cdb914d66e2b31",
+    "PB/2026-10-31.json": "79fbf2590f50297e5eb90fcb8592c1afe3c276af774d93cbf56337f90327cc3f",
+    "PB/2026-11-01.json": "f1f1f1d4af0bce34e98c8ba41b85b108144d83589de78fbc28cc04e93f76d9bb",
+    "PB/2026-11-02.json": "9acdf8b755e4e61ebc7c6648ac39608c708dcec50226d3c025a1774ea080244e",
+    "PB/2026-11-03.json": "cbe1ad0a41d1579b86b99db7878c8c9ef9c221eda3143b9f49894eabcda57ecd",
+    "PB/2026-11-04.json": "361e213dccfbb05af63372e5b77fbf4f1dee30c474bb77413ce1bb5d0cf47df9",
+    "PB/2026-11-05.json": "a3ec03d562b3523b0ef7a36ad2a9fb00d1df210b257df8ea05ef2ac14bc1f534",
+    "PB/2026-11-06.json": "036d21ff91d4a0e695d8a2ff524d85aabc2c1f9604419967e17ea6e87fd40d49",
+    "PB/2026-11-07.json": "a1621a682f19a2ffc6396b034dcf626783fcfc970dd0275a7fcbfa4317c41f20",
+    "PB/2026-11-08.json": "65207a9b75d1ecc365f66418d16b7bdf1a52cfe74e4eb3b396a3f1975ca93651",
+    "PB/2026-11-09.json": "809edaca72a76b109e298e537b86c5f69451b7e1dbd6fb432308ae0e8a95fa4c",
+    "PB/2026-11-10.json": "1ea771d4abfabbf15a37f59485d3f725e292aa8e5511145c7274650438cd6850",
+    "PB/2026-11-11.json": "fe22f592a2c96b35964400d47d99e79b6664dbf4eb92ae4e8151171604987318",
+    "PB/2026-11-12.json": "361e213dccfbb05af63372e5b77fbf4f1dee30c474bb77413ce1bb5d0cf47df9",
+    "PB/2026-11-13.json": "9129fc029c9b68b6d42df14fb432866b4899c5662769dbb850b477fc401dc174",
+    "PB/2026-11-14.json": "860c7f20a24a193d506288e68e4e270843208c5811e6c1fe4108fd39a80582fa",
+    "PB/2026-11-15.json": "cf1cd48e0d3c0d6426d0485cbe1ade4defdb31f9fdf1e7d1e9f83504b4ea15eb",
+    "PB/historical_data.json": "d155a2675d980dafe4e5afb5781f018a3011c987b2412a2ccc602647bf158411"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "year": 2026,
+  "season_start": "2026-09-15",
+  "season_end": "2026-11-30",
+  "reviewed_through": "2026-11-15",
+  "archive_sha256": "e07a24f44b2f9771eace067f4fcefce1cec75602f44c44b92da254e54559e7ac",
+  "bulletin_index": "https://creams.iari.res.in/?page_id=1123",
+  "max_lag_days": 2
+}

@@ -1,0 +1,38 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "15_november_2026_rice.1",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.91862,
+          31.86427
+        ]
+      },
+      "geometry_name": "geom",
+      "properties": {
+        "s_no_": 1,
+        "district": "AMRITSAR",
+        "block": "AJNALA",
+        "satellite": "JPSS-1",
+        "latitude": 31.86427,
+        "longitude": 74.91862,
+        "acq_date": 15112026.0,
+        "acq_time": "13:36:12",
+        "day_flag": "D",
+        "fire_power": 2.8
+      }
+    }
+  ],
+  "totalFeatures": 1,
+  "numberMatched": 1,
+  "numberReturned": 1,
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:EPSG::4326"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "publisher_layer": "geokrishi_v:district_boundary_ll_soi",
+  "publisher_url": "https://creams.iari.res.in/geokrishi/geoserver/wfs",
+  "publisher_snapshot_sha256": "0eb3ec2bdb47956afbb48befcb493ffe374540a5116f842e331dbc2394928b6f",
+  "lgd_blocks_sha256": "928e513be04e802796ec93a764558ecd93a71f27ae2f25f6d5b68436b282766b",
+  "lgd_release_url": "https://github.com/yashveeeeeeer/india-geodata/releases/tag/admin/blocks",
+  "hansi_membership_url": "https://hansi.haryana.gov.in/subdivision-blocks/",
+  "hansi_method": "Union LGD blocks 487 (Hansi-I), 488 (Hansi-II), 491 (Narnaund); intersect with publisher Hisar and subtract from Hisar.",
+  "edge_clipped_area_fraction": 9.878807988985759e-08,
+  "display_simplification_metres": 40,
+  "count_assignment": "Publisher classification; polygons do not determine counts",
+  "outputs": {
+    "PB": "d6a1376f7be80aee45e1add8dc97508abd3833aa3479cd863a060ce5f9b699b9",
+    "HR": "38c79ad0a33899d47087f6943ac03e8df59d40f8195481bc580eb8e3f61cc947"
+  },
+  "svg_sha256": "f0ebd804e5f0b5c275894c19fd60ef08116604067161987e40442438fb429a2f"
+}
