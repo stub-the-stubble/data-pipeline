@@ -10,6 +10,7 @@ node_modules
 *.kml
 *.kmz
 *.zip
+!data/iari/reviewed-2026.zip
 
 #Test scripts
 /scripts

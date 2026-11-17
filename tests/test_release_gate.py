@@ -37,3 +37,18 @@ class ReleaseGateTests(unittest.TestCase):
     def test_manual_publish_requires_main_and_publish_gate(self):
         self.assertNotEqual(self.check_gate('workflow_dispatch', 'deploy-existing', '', '')[0], 0)
         self.assertNotEqual(self.check_gate('workflow_dispatch', 'deploy-existing', 'true', '', 'refs/heads/test')[0], 0)
+
+    def test_unchanged_ingestion_skips_deploy_but_explicit_recovery_can_publish(self):
+        workflow = (Path(__file__).parents[1] / '.github/workflows/main.yml').read_text()
+        decision = workflow.split('      - name: Decide whether a new snapshot needs deployment')[1]
+        script = textwrap.dedent(decision.split('        run: |', 1)[1].split('      - name: Package')[0])
+        shell = 'C:/Program Files/Git/bin/bash.exe' if os.name == 'nt' else '/bin/bash'
+        for mode, changed, expected in [('validate','false','false'), ('validate','true','false'),
+                                         ('ingest-and-deploy','false','false'),
+                                         ('ingest-and-deploy','true','true'), ('deploy-existing','','true')]:
+            with self.subTest(mode=mode, changed=changed), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory)/'output'
+                env = dict(os.environ, MODE=mode, CHANGED=changed, GITHUB_OUTPUT=output.as_posix())
+                result = subprocess.run([shell,'-c',script],env=env,capture_output=True,text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(output.read_text().strip(), 'publish='+expected)

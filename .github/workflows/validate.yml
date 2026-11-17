@@ -22,8 +22,11 @@ jobs:
           environment-file: spec-file.txt
           activate-environment: env
           auto-activate: false
+      - run: python -m pip install -r requirements-iari.txt
       - run: python -m unittest discover -s tests -v
       - name: Validate published baseline
         run: python -c "import sys; sys.path.insert(0, 'v2'); from backfill import validate_published_data; print('Validated daily files:', validate_published_data('docs/v2'))"
       - name: Replay frozen recovery batch without publishing
         run: python tests/replay_recovery.py
+      - name: Replay IARI scheduled ingestion without network or publishing
+        run: python tests/replay_iari_schedule.py

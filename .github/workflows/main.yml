@@ -1,4 +1,4 @@
-name: Validate, ingest and publish NRSC data
+name: Validate, ingest and publish IARI data
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Validate only, ingest today and deploy, or deploy already committed data'
+        description: 'Validate only, ingest the latest completed IARI bulletin, or deploy committed data'
         type: choice
         options: [validate, ingest-and-deploy, deploy-existing]
         default: validate
@@ -16,6 +16,7 @@ permissions:
   contents: read
 
 # Shared by every supported writer/publisher. Hold the whole run, including deployment.
+# Retain the existing group name so a transition cannot overlap an older run.
 concurrency:
   group: nrsc-data-release
   cancel-in-progress: false
@@ -29,7 +30,7 @@ jobs:
     permissions:
       contents: write
     outputs:
-      publish: ${{ steps.mode.outputs.publish }}
+      publish: ${{ steps.release.outputs.publish }}
       data_sha: ${{ steps.snapshot.outputs.data_sha }}
     defaults:
       run:
@@ -74,26 +75,50 @@ jobs:
           activate-environment: env
           auto-activate: false
       - name: Run offline tests
-        run: python -m unittest discover -s tests -v
+        run: |
+          python -m pip install -r requirements-iari.txt
+          python -m unittest discover -s tests -v
       - name: Require both published histories
         run: python -c "import sys; sys.path.insert(0, 'v2'); from backfill import require_histories; require_histories('docs/v2')"
-      - name: Ingest current IST day
+      - name: Require a clean release checkout
+        if: steps.mode.outputs.publish == 'true'
+        run: test -z "$(git status --porcelain)"
+      - name: Prepare and apply the validated IARI update
+        id: ingest
         if: steps.mode.outputs.mode == 'ingest-and-deploy'
-        run: python v2/get_nrsc_data.py
+        run: |
+          python v2/iari_schedule.py --baseline docs/v2 --work-dir "$RUNNER_TEMP/iari-run" --apply
+          python -c "import json, os; from pathlib import Path; r=json.loads((Path(os.environ['RUNNER_TEMP'])/'iari-run/release.json').read_text()); print('changed='+str(r['status']=='ready').lower())" >> "$GITHUB_OUTPUT"
       - name: Reconcile all recovered daily files with history
         run: python -c "import sys; sys.path.insert(0, 'v2'); from backfill import validate_published_data; print('Validated daily files:', validate_published_data('docs/v2'))"
+      - name: Require the reviewed IARI source migration before publication
+        if: steps.mode.outputs.publish == 'true'
+        run: python -c "import sys; sys.path.insert(0, 'v2'); from iari_schedule import require_iari_baseline, read_json, POLICY; print('Validated IARI season through:', require_iari_baseline('docs/v2', read_json(POLICY)))"
       - name: Commit validated JSON only
-        if: steps.mode.outputs.mode == 'ingest-and-deploy'
+        if: steps.ingest.outputs.changed == 'true'
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add -- docs/v2/PB/*.json docs/v2/HR/*.json
           if ! git diff --cached --quiet; then
-            git commit -m "Data update : $(date -u)"
+            # Only public state JSON is eligible; code, evidence and credentials cannot enter this commit.
+            python -c "import re, subprocess; names=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines(); assert names and all(re.fullmatch(r'docs/v2/(PB|HR)/(historical_data|[0-9]{4}-[0-9]{2}-[0-9]{2})[.]json', n) for n in names)"
+            git fetch origin main
+            test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+            git commit -m "Update validated IARI observations"
             git push origin HEAD:main
           fi
+      - name: Decide whether a new snapshot needs deployment
+        id: release
+        env:
+          MODE: ${{ steps.mode.outputs.mode }}
+          CHANGED: ${{ steps.ingest.outputs.changed }}
+        run: |
+          publish=false
+          if [ "$MODE" = deploy-existing ] || { [ "$MODE" = ingest-and-deploy ] && [ "$CHANGED" = true ]; }; then publish=true; fi
+          echo "publish=$publish" >> "$GITHUB_OUTPUT"
       - name: Package the committed snapshot
-        if: steps.mode.outputs.publish == 'true'
+        if: steps.release.outputs.publish == 'true'
         id: snapshot
         run: |
           git fetch origin main
@@ -105,10 +130,18 @@ jobs:
           git archive HEAD docs | tar -x -C "$RUNNER_TEMP/pages-site"
           echo "data_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Upload committed Pages artifact
-        if: steps.mode.outputs.publish == 'true'
+        if: steps.release.outputs.publish == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/pages-site/docs
+      - name: Retain IARI evidence and validation report
+        if: always() && steps.mode.outputs.mode == 'ingest-and-deploy'
+        uses: actions/upload-artifact@v4
+        with:
+          name: iari-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/iari-run
+          if-no-files-found: ignore
+          retention-days: 14
 
   deploy:
     needs: prepare

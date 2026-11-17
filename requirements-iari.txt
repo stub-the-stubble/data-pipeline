@@ -1,0 +1,2 @@
+# PDF parsing for the independently published count tables and reviewed fallbacks.
+pypdf==6.21.4
